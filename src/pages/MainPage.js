@@ -1,18 +1,17 @@
-import React, {useState, useContext, useEffect, useCallback} from 'react'
-import {useHttp} from '../hooks/http.hook'
-import {AuthContext} from '../context/AuthContext'
-import {Loader} from '../components/Loader'
-
+import React, { useState, useContext, useEffect, useCallback } from 'react'
+import { useHttp } from '../hooks/http.hook'
+import { AuthContext } from '../context/AuthContext'
+import { Loader } from '../components/Loader'
 
 export const MainPage = () => {
     const [user, setUser] = useState({})
-    const {loading, request} = useHttp()
-    const {token} = useContext(AuthContext)
+    const { loading, request } = useHttp()
+    const { token } = useContext(AuthContext)
 
     const fetchUserInfo = useCallback(async () => {
         try {
             const fetched = await request('/api/user', 'GET', null, {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
             })
             setUser(fetched)
         } catch (e) {}
@@ -23,22 +22,17 @@ export const MainPage = () => {
     }, [fetchUserInfo])
 
     if (loading) {
-        return <Loader/>
+        return <Loader />
     }
 
     return (
         <>
-        {!loading &&
-        <ul>
-            <li>id: {user.id}</li>
-            <li>email: {user.email}</li>
-        </ul>}
+            {!loading && (
+                <ul>
+                    <li>id: {user.id}</li>
+                    <li>email: {user.email}</li>
+                </ul>
+            )}
         </>
     )
 }
-
-
-
-
-
-
