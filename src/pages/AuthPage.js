@@ -8,7 +8,7 @@ export const AuthPage = () => {
   const message = useMessage()
   const {loading, request, error, clearError} = useHttp()
   const [form, setForm] = useState({
-    email: '', password: ''
+    name: '', email: '', password: '', role: 'user'
   })
 
   useEffect(() => {
@@ -46,6 +46,19 @@ export const AuthPage = () => {
           <div className="card-content white-text">
             <span className="card-title">Авторизация</span>
             <div>
+
+              <div className="input-field">
+                <input
+                    placeholder="Введите name"
+                    id="name"
+                    type="text"
+                    name="name"
+                    className="yellow-input"
+                    value={form.name}
+                    onChange={changeHandler}
+                />
+                <label htmlFor="email">Name</label>
+              </div>
 
               <div className="input-field">
                 <input
