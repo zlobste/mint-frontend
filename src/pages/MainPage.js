@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { useHttp } from '../hooks/http.hook'
 import { AuthContext } from '../context/AuthContext'
 import { Loader } from '../components/Loader'
+import { Card } from '../components/Card'
 
 export const MainPage = () => {
     const [user, setUser] = useState({})
@@ -10,7 +11,7 @@ export const MainPage = () => {
 
     const fetchUserInfo = useCallback(async () => {
         try {
-            const fetched = await request('/api/user', 'GET', null, {
+            const fetched = await request('/api/user/info', 'GET', null, {
                 Authorization: `Bearer ${token}`,
             })
             setUser(fetched)
@@ -29,8 +30,30 @@ export const MainPage = () => {
         <>
             {!loading && (
                 <ul>
-                    <li>id: {user.id}</li>
-                    <li>email: {user.email}</li>
+                    <li>{user.name}</li>
+                    <li>{user.email}</li>
+                    <div className="row">
+                        <div className="col s4">
+                            <Card />
+                        </div>
+                        <div className="col s4">
+                            <Card />
+                        </div>
+                        <div className="col s4">
+                            <Card />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col s4">
+                            <Card />
+                        </div>
+                        <div className="col s4">
+                            <Card />
+                        </div>
+                        <div className="col s4">
+                            <Card />
+                        </div>
+                    </div>
                 </ul>
             )}
         </>

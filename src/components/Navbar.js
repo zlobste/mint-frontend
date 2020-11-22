@@ -15,7 +15,7 @@ export const Navbar = () => {
     return (
         <nav>
             <div
-                className="nav-wrapper blue darken-1"
+                className="nav-wrapper blue-grey darken-3"
                 style={{ padding: '0 2rem' }}
             >
                 <span className="brand-logo">Mint</span>

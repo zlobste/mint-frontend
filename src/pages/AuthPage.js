@@ -11,8 +11,9 @@ export const AuthPage = () => {
         name: '',
         email: '',
         password: '',
-        role: 'user',
+        role: 2,
     })
+    const [registered, setRegistered] = useState(true)
 
     useEffect(() => {
         message(error)
@@ -27,10 +28,15 @@ export const AuthPage = () => {
         setForm({ ...form, [event.target.name]: event.target.value })
     }
 
+    const changeStatus = () => {
+        setRegistered(!registered)
+    }
+
     const registerHandler = async () => {
         try {
             const data = await request('/register', 'POST', { ...form })
             message(data.message)
+            setRegistered(!registered)
         } catch (e) {}
     }
 
@@ -44,23 +50,30 @@ export const AuthPage = () => {
     return (
         <div className="row">
             <div className="col s6 offset-s3">
-                <h1>Сократи Ссылку</h1>
-                <div className="card blue darken-1">
+                <h1 className="text-darken-3 green-text">Mint</h1>
+                <div className="card blue-grey lighten-1">
                     <div className="card-content white-text">
-                        <span className="card-title">Авторизация</span>
+                        {!registered ? (
+                            <span className="card-title">Регистрация</span>
+                        ) : (
+                            <span className="card-title">Авторизация</span>
+                        )}
+
                         <div>
-                            <div className="input-field">
-                                <input
-                                    placeholder="Введите name"
-                                    id="name"
-                                    type="text"
-                                    name="name"
-                                    className="yellow-input"
-                                    value={form.name}
-                                    onChange={changeHandler}
-                                />
-                                <label htmlFor="email">Name</label>
-                            </div>
+                            {!registered && (
+                                <div className="input-field">
+                                    <input
+                                        placeholder="Введите name"
+                                        id="name"
+                                        type="text"
+                                        name="name"
+                                        className="green-input"
+                                        value={form.name}
+                                        onChange={changeHandler}
+                                    />
+                                    <label htmlFor="name">Name</label>
+                                </div>
+                            )}
 
                             <div className="input-field">
                                 <input
@@ -68,7 +81,7 @@ export const AuthPage = () => {
                                     id="email"
                                     type="text"
                                     name="email"
-                                    className="yellow-input"
+                                    className="green-input"
                                     value={form.email}
                                     onChange={changeHandler}
                                 />
@@ -81,31 +94,52 @@ export const AuthPage = () => {
                                     id="password"
                                     type="password"
                                     name="password"
-                                    className="yellow-input"
+                                    className="green-input"
                                     value={form.password}
                                     onChange={changeHandler}
                                 />
-                                <label htmlFor="email">Пароль</label>
+                                <label htmlFor="password">Пароль</label>
                             </div>
                         </div>
                     </div>
-                    <div className="card-action">
-                        <button
-                            className="btn yellow darken-4"
-                            style={{ marginRight: 10 }}
-                            disabled={loading}
-                            onClick={loginHandler}
-                        >
-                            Войти
-                        </button>
-                        <button
-                            className="btn grey lighten-1 black-text"
-                            onClick={registerHandler}
-                            disabled={loading}
-                        >
-                            Регистрация
-                        </button>
-                    </div>
+
+                    {registered ? (
+                        <div className="card-action">
+                            <button
+                                className="btn green darken-3"
+                                style={{ marginRight: 10 }}
+                                disabled={loading}
+                                onClick={loginHandler}
+                            >
+                                Войти
+                            </button>
+                            <button
+                                className="btn blue-grey darken-3"
+                                onClick={changeStatus}
+                                disabled={loading}
+                            >
+                                Зарегистрироваться
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="card-action">
+                            <button
+                                className="btn blue-grey darken-3"
+                                style={{ marginRight: 10 }}
+                                disabled={loading}
+                                onClick={changeStatus}
+                            >
+                                Войти
+                            </button>
+                            <button
+                                className="btn green darken-3"
+                                onClick={registerHandler}
+                                disabled={loading}
+                            >
+                                Зарегистрироваться
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
