@@ -1,8 +1,25 @@
 import React, { useContext } from 'react'
+import { Button, Icon } from 'atomize'
 
 export const Card = () => {
     return (
         <div className="row">
+            <Button
+                suffix={
+                    <Icon
+                        name="LongRight"
+                        size="16px"
+                        color="white"
+                        m={{ l: '1rem' }}
+                    />
+                }
+                shadow="3"
+                hoverShadow="4"
+                m={{ r: '1rem' }}
+            >
+                Contact Us
+            </Button>
+
             <div className="col s4 m12">
                 <div className="card">
                     <div className="card-image">
