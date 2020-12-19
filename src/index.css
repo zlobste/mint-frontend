@@ -1,37 +1,3 @@
-@import '~materialize-css/dist/css/materialize.min.css';
-
-input.green-input {
-    border-bottom: 1px solid #fff !important;
-    box-shadow: 0 1px 0 0 #fff !important;
-}
-
-input.green-input + label {
-    color: #ffffff !important;
-}
-
-input.green-input:focus + label {
-    color: #2e7d32 !important;
-}
-
-input.green-input:focus {
-    border-bottom: 1px solid #2e7d32 !important;
-    box-shadow: 0 1px 0 0 #2e7d32 !important;
-}
-
-textarea.green-input {
-    border-bottom: 1px solid #fff !important;
-    box-shadow: 0 1px 0 0 #fff !important;
-}
-
-textarea.green-input + label {
-    color: #ffffff !important;
-}
-
-textarea.green-input:focus + label {
-    color: #2e7d32 !important;
-}
-
-textarea.green-input:focus {
-    border-bottom: 1px solid #2e7d32 !important;
-    box-shadow: 0 1px 0 0 #2e7d32 !important;
+button {
+    outline: none;
 }

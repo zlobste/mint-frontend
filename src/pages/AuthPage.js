@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useHttp } from '../hooks/http.hook'
 import { useMessage } from '../hooks/message.hook'
 import { AuthContext } from '../context/AuthContext'
+import { Input, Button, Icon, Container, Col, Row, Text, Div } from 'atomize'
 
 export const AuthPage = () => {
     const auth = useContext(AuthContext)
@@ -14,6 +15,7 @@ export const AuthPage = () => {
         role: 2,
     })
     const [registered, setRegistered] = useState(true)
+    const [passwordVisibility, setPasswordVisibility] = useState(false)
 
     useEffect(() => {
         message(error)
@@ -32,116 +34,190 @@ export const AuthPage = () => {
         setRegistered(!registered)
     }
 
-    const registerHandler = async () => {
+    const authHandler = async () => {
         try {
+            if (registered) {
+                const data = await request('/login', 'POST', { ...form })
+                auth.login(data.token, data.userId)
+                return
+            }
             const data = await request('/register', 'POST', { ...form })
             message(data.message)
             setRegistered(!registered)
-        } catch (e) {}
-    }
-
-    const loginHandler = async () => {
-        try {
-            const data = await request('/login', 'POST', { ...form })
-            auth.login(data.token, data.userId)
-        } catch (e) {}
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     return (
-        <div className="row">
-            <div className="col s6 offset-s3">
-                <h1 className="text-darken-3 green-text">Mint</h1>
-                <div className="card blue-grey lighten-1">
-                    <div className="card-content white-text">
-                        {!registered ? (
-                            <span className="card-title">Регистрация</span>
-                        ) : (
-                            <span className="card-title">Авторизация</span>
+        <div>
+            <Row>
+                <Col size="4" />
+                <Col size="4">
+                    <Container
+                        align="center"
+                        justify="space-between"
+                        flexDir="column"
+                        shadow="0 16px 24px -2px rgba(0, 0, 0, 0.08)"
+                        p={{ xs: '1rem', md: '1rem', lg: '1rem' }}
+                        m={{ y: { xs: '4rem', md: '5rem', lg: '10rem' } }}
+                    >
+                        <Div>
+                            <Text
+                                tag="span"
+                                textAlign="center"
+                                textSize="title"
+                                fontFamily="primary"
+                                p={{ xs: '1rem', md: '1rem', lg: '1rem' }}
+                            >
+                                {!registered ? (
+                                    <>Create New account</>
+                                ) : (
+                                    <>Login into your account</>
+                                )}
+                            </Text>
+                            <Button
+                                h="2rem"
+                                p={{ x: '0.75rem' }}
+                                textSize="caption"
+                                textColor="info700"
+                                hoverTextColor="info900"
+                                bg="white"
+                                border="none"
+                                m={{ r: '0.5rem' }}
+                                prefix={
+                                    <Text
+                                        tag="span"
+                                        textAlign="center"
+                                        textSize="caption"
+                                        textColor="gray900"
+                                        fontFamily="primary"
+                                        p={{
+                                            xs: '0.5rem',
+                                            md: '0.5rem',
+                                            lg: '0.5rem',
+                                        }}
+                                    >
+                                        {!registered ? (
+                                            <>Have already registered?</>
+                                        ) : (
+                                            <>Don't have an account yet?</>
+                                        )}
+                                    </Text>
+                                }
+                                onClick={changeStatus}
+                            >
+                                {!registered ? (
+                                    <>Login into</>
+                                ) : (
+                                    <>Create New</>
+                                )}
+                            </Button>
+                        </Div>
+
+                        {!registered && (
+                            <Input
+                                id="name"
+                                name="name"
+                                placeholder="User Name"
+                                m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
+                                suffix={
+                                    <Icon
+                                        name="UserSolid"
+                                        color="success800"
+                                        size="16px"
+                                        cursor="pointer"
+                                        pos="absolute"
+                                        top="50%"
+                                        right="1rem"
+                                        transform="translateY(-50%)"
+                                    />
+                                }
+                                value={form.name}
+                                onChange={changeHandler}
+                            />
                         )}
 
-                        <div>
-                            {!registered && (
-                                <div className="input-field">
-                                    <input
-                                        placeholder="Введите name"
-                                        id="name"
-                                        type="text"
-                                        name="name"
-                                        className="green-input"
-                                        value={form.name}
-                                        onChange={changeHandler}
+                        <Input
+                            id="email"
+                            name="email"
+                            placeholder="User email"
+                            m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
+                            suffix={
+                                <Icon
+                                    name="Email"
+                                    color="success800"
+                                    size="16px"
+                                    cursor="pointer"
+                                    pos="absolute"
+                                    top="50%"
+                                    right="1rem"
+                                    transform="translateY(-50%)"
+                                />
+                            }
+                            value={form.email}
+                            onChange={changeHandler}
+                        />
+
+                        <Input
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                            type={passwordVisibility ? 'text' : 'password'}
+                            m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
+                            suffix={
+                                <Button
+                                    pos="absolute"
+                                    onClick={() =>
+                                        setPasswordVisibility(
+                                            !passwordVisibility
+                                        )
+                                    }
+                                    bg="transparent"
+                                    w="3rem"
+                                    top="0"
+                                    right="0"
+                                    rounded={{ r: 'md' }}
+                                >
+                                    <Icon
+                                        name={
+                                            passwordVisibility
+                                                ? 'EyeSolid'
+                                                : 'Eye'
+                                        }
+                                        color={
+                                            passwordVisibility
+                                                ? 'danger800'
+                                                : 'success800'
+                                        }
+                                        size="16px"
                                     />
-                                    <label htmlFor="name">Name</label>
-                                </div>
-                            )}
+                                </Button>
+                            }
+                            value={form.password}
+                            onChange={changeHandler}
+                        />
 
-                            <div className="input-field">
-                                <input
-                                    placeholder="Введите email"
-                                    id="email"
-                                    type="text"
-                                    name="email"
-                                    className="green-input"
-                                    value={form.email}
-                                    onChange={changeHandler}
-                                />
-                                <label htmlFor="email">Email</label>
-                            </div>
-
-                            <div className="input-field">
-                                <input
-                                    placeholder="Введите пароль"
-                                    id="password"
-                                    type="password"
-                                    name="password"
-                                    className="green-input"
-                                    value={form.password}
-                                    onChange={changeHandler}
-                                />
-                                <label htmlFor="password">Пароль</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    {registered ? (
-                        <div className="card-action">
-                            <button
-                                className="btn green darken-3"
-                                style={{ marginRight: 10 }}
-                                disabled={loading}
-                                onClick={loginHandler}
-                            >
-                                Войти
-                            </button>
-                            <button
-                                className="btn blue-grey darken-3"
-                                onClick={changeStatus}
-                                disabled={loading}
-                            >
-                                Зарегистрироваться
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="card-action">
-                            <button
-                                className="btn blue-grey darken-3"
-                                style={{ marginRight: 10 }}
-                                disabled={loading}
-                                onClick={changeStatus}
-                            >
-                                Войти
-                            </button>
-                            <button
-                                className="btn green darken-3"
-                                onClick={registerHandler}
-                                disabled={loading}
-                            >
-                                Зарегистрироваться
-                            </button>
-                        </div>
-                    )}
-                </div>
-            </div>
+                        <Button
+                            h="2.5rem"
+                            p={{ x: '1rem' }}
+                            textSize="body"
+                            textColor="info700"
+                            hoverTextColor="info900"
+                            bg="info300"
+                            hoverBg="info400"
+                            border="1px solid"
+                            borderColor="info700"
+                            hoverBorderColor="info900"
+                            m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
+                            onClick={authHandler}
+                        >
+                            {registered ? 'Sign in' : 'Register'}
+                        </Button>
+                    </Container>
+                </Col>
+                <Col size="4" />
+            </Row>
         </div>
     )
 }
