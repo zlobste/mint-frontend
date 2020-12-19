@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { Suspense, useContext, useEffect, useState } from 'react'
 import { useHttp } from '../hooks/http.hook'
 import { useMessage } from '../hooks/message.hook'
 import { AuthContext } from '../context/AuthContext'
 import { Input, Button, Icon, Container, Col, Row, Text, Div } from 'atomize'
+import { useTranslation } from 'react-i18next'
 
 export const AuthPage = () => {
-    const auth = useContext(AuthContext)
-    const message = useMessage()
-    const { loading, request, error, clearError } = useHttp()
     const [form, setForm] = useState({
         name: '',
         email: '',
@@ -16,6 +14,10 @@ export const AuthPage = () => {
     })
     const [registered, setRegistered] = useState(true)
     const [passwordVisibility, setPasswordVisibility] = useState(false)
+    const auth = useContext(AuthContext)
+    const message = useMessage()
+    const { loading, request, error, clearError } = useHttp()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         message(error)
@@ -70,11 +72,9 @@ export const AuthPage = () => {
                                 fontFamily="primary"
                                 p={{ xs: '1rem', md: '1rem', lg: '1rem' }}
                             >
-                                {!registered ? (
-                                    <>Create New account</>
-                                ) : (
-                                    <>Login into your account</>
-                                )}
+                                {!registered
+                                    ? t('auth.createNewAccount')
+                                    : t('auth.loginIntoAccount')}
                             </Text>
                             <Button
                                 h="2rem"
@@ -98,20 +98,16 @@ export const AuthPage = () => {
                                             lg: '0.5rem',
                                         }}
                                     >
-                                        {!registered ? (
-                                            <>Have already registered?</>
-                                        ) : (
-                                            <>Don't have an account yet?</>
-                                        )}
+                                        {!registered
+                                            ? t('auth.haveAlreadyRegistered')
+                                            : t('auth.doNotHaveAnAccountYet')}
                                     </Text>
                                 }
                                 onClick={changeStatus}
                             >
-                                {!registered ? (
-                                    <>Login into</>
-                                ) : (
-                                    <>Create New</>
-                                )}
+                                {!registered
+                                    ? t('auth.loginInto')
+                                    : t('auth.createNew')}
                             </Button>
                         </Div>
 
@@ -119,7 +115,7 @@ export const AuthPage = () => {
                             <Input
                                 id="name"
                                 name="name"
-                                placeholder="User Name"
+                                placeholder={t('auth.userName')}
                                 m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
                                 suffix={
                                     <Icon
@@ -141,7 +137,7 @@ export const AuthPage = () => {
                         <Input
                             id="email"
                             name="email"
-                            placeholder="User email"
+                            placeholder={t('auth.email')}
                             m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
                             suffix={
                                 <Icon
@@ -162,7 +158,7 @@ export const AuthPage = () => {
                         <Input
                             id="password"
                             name="password"
-                            placeholder="Password"
+                            placeholder={t('auth.password')}
                             type={passwordVisibility ? 'text' : 'password'}
                             m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
                             suffix={
@@ -212,7 +208,7 @@ export const AuthPage = () => {
                             m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
                             onClick={authHandler}
                         >
-                            {registered ? 'Sign in' : 'Register'}
+                            {registered ? t('auth.signIn') : t('auth.register')}
                         </Button>
                     </Container>
                 </Col>

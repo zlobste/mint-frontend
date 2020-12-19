@@ -1,43 +1,26 @@
 import React, { useContext } from 'react'
-import { Button, Icon } from 'atomize'
+import { Div, Text, Image, Col } from 'atomize'
 
-export const Card = () => {
+export const Card = (params) => {
     return (
-        <div className="row">
-            <Button
-                suffix={
-                    <Icon
-                        name="LongRight"
-                        size="16px"
-                        color="white"
-                        m={{ l: '1rem' }}
-                    />
-                }
-                shadow="3"
-                hoverShadow="4"
-                m={{ r: '1rem' }}
+        <Div bg="white" shadow="2" rounded="xl" m={{ b: '1rem' }} p="1.5rem">
+            <Col>
+                <Image src={params.image} />
+            </Col>
+            <Div
+                d="flex"
+                justify="space-between"
+                p={{ t: '1rem', b: '1.5rem' }}
             >
-                Contact Us
-            </Button>
-
-            <div className="col s4 m12">
-                <div className="card">
-                    <div className="card-image">
-                        <img src="https://www.restu.cz/ir/restaurant/d88/d8819dba6cfd3254d1a13a429bee3afb.jpg" />
-                        <span className="card-title">Card Title</span>
-                    </div>
-                    <div className="card-content">
-                        <p>
-                            I am a very simple card. I am good at containing
-                            small bits of information. I am convenient because I
-                            require little markup to use effectively.
-                        </p>
-                    </div>
-                    <div className="card-action">
-                        <a href="#">This is a link</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+                <Div>
+                    <Text textSize="caption" textColor="dark">
+                        Payment Card
+                    </Text>
+                    <Text textSize="caption" textColor="light">
+                        Component
+                    </Text>
+                </Div>
+            </Div>
+        </Div>
     )
 }

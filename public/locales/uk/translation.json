@@ -1,0 +1,15 @@
+{
+    "auth": {
+        "signIn": "Увiйти",
+        "register": "Зареєструватися",
+        "loginInto": "Увійти",
+        "createNew": "Створити запис",
+        "createNewAccount": "Створити новий обліковий запис",
+        "haveAlreadyRegistered": "Вже зареєструвались?",
+        "doNotHaveAnAccountYet": "Ще не маєте облікового запису?",
+        "loginIntoAccount": "Увійти у свій обліковий запис",
+        "userName": "ім'я",
+        "email": "електронна пошта",
+        "password": "пароль"
+    }
+}

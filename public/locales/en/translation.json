@@ -1,0 +1,15 @@
+{
+    "auth": {
+        "signIn": "Sign In",
+        "register": "Register",
+        "loginInto": "Login into",
+        "createNew": "Create New",
+        "createNewAccount": "Create New account",
+        "haveAlreadyRegistered": "Have already registered?",
+        "doNotHaveAnAccountYet": "Don't have an account yet?",
+        "loginIntoAccount": "Login into your account",
+        "userName": "name",
+        "email": "email",
+        "password": "password"
+    }
+}
