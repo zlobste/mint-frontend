@@ -15,7 +15,6 @@ import {
 import { AuthContext } from '../context/AuthContext'
 
 export const CreateDishForm = () => {
-    const message = useMessage()
     const { request } = useHttp()
     const { token } = useContext(AuthContext)
     const [form, setForm] = useState({

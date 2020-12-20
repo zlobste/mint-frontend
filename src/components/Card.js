@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { Div, Text, Image, Col } from 'atomize'
 
-export const Card = (params) => {
+export const Card = ({ dish, image }) => {
     return (
         <Div bg="white" shadow="2" rounded="xl" m={{ b: '1rem' }} p="1.5rem">
             <Col>
-                <Image src={params.image} />
+                <Image src={image} />
             </Col>
             <Div
                 d="flex"
@@ -14,10 +14,10 @@ export const Card = (params) => {
             >
                 <Div>
                     <Text textSize="caption" textColor="dark">
-                        Payment Card
+                        {dish.title} ${dish.cost}
                     </Text>
                     <Text textSize="caption" textColor="light">
-                        Component
+                        {dish.description}
                     </Text>
                 </Div>
             </Div>

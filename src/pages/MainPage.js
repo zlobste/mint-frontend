@@ -7,6 +7,7 @@ import { Input, Button, Icon, Container, Col, Row, Text, Div } from 'atomize'
 
 export const MainPage = () => {
     const [user, setUser] = useState({})
+    const [dishes, setDishes] = useState([])
     const { loading, request } = useHttp()
     const { token } = useContext(AuthContext)
 
@@ -23,6 +24,19 @@ export const MainPage = () => {
         fetchUserInfo()
     }, [fetchUserInfo])
 
+    const getDishes = useCallback(async () => {
+        try {
+            const data = await request('/api/dish/all', 'GET', null, {
+                Authorization: `Bearer ${token}`,
+            })
+            setDishes(data)
+        } catch (e) {}
+    }, [token, request])
+
+    useEffect(() => {
+        getDishes()
+    }, [getDishes])
+
     if (loading) {
         return <Loader />
     }
@@ -33,18 +47,19 @@ export const MainPage = () => {
                 <Container>
                     {user.name} {user.email}
                     <Row>
-                        <Col size="3">
-                            <Card image="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" />
-                        </Col>
-                        <Col size="3">
-                            <Card image="https://i.pinimg.com/originals/ca/76/0b/ca760b70976b52578da88e06973af542.jpg" />
-                        </Col>
-                        <Col size="3">
-                            <Card image="https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg" />
-                        </Col>
-                        <Col size="3">
-                            <Card image="https://image.shutterstock.com/image-photo/ancient-temple-ruins-gadi-sagar-260nw-786126286.jpg" />
-                        </Col>
+                        {dishes.map((dish, key) => {
+                            if (key % 4 !== 0) {
+                                return (
+                                    <Col size="3">
+                                        <Card
+                                            image="https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg"
+                                            dish={dish}
+                                        />
+                                    </Col>
+                                )
+                            }
+                            return <br />
+                        })}
                     </Row>
                 </Container>
             )}
