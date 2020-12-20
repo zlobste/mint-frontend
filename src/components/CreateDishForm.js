@@ -19,9 +19,9 @@ export const CreateDishForm = () => {
     const { request } = useHttp()
     const { token } = useContext(AuthContext)
     const [form, setForm] = useState({
-        title: 'Spagetti',
-        description: 'very tasty',
-        cost: 5.55,
+        title: '',
+        description: '',
+        cost: '',
     })
     const [dishes, setDishes] = useState([])
 
@@ -29,28 +29,31 @@ export const CreateDishForm = () => {
         setForm({ ...form, [event.target.name]: event.target.value })
     }
 
-    const createDish = useCallback(async () => {
+    const createDish = async () => {
         try {
-            console.log(token)
+            console.log(form)
             const data = await request(
                 '/api/dish/edit/create',
                 'POST',
-                { ...form },
+                { ...form, cost: Number(form.cost) },
                 {
                     Authorization: `Bearer ${token}`,
                 }
             )
-            message(data.message)
-        } catch (e) {}
-        getDishes()
-    }, [token, request])
+            await getDishes()
+        } catch (e) {
+            console.error(e)
+        }
+    }
 
     const getDishes = useCallback(async () => {
         try {
-            const data = await request('/api/dish/all', 'GET', null)
+            const data = await request('/api/dish/all', 'GET', null, {
+                Authorization: `Bearer ${token}`,
+            })
             setDishes(data)
         } catch (e) {}
-    }, [request])
+    }, [token, request])
 
     useEffect(() => {
         getDishes()
@@ -72,6 +75,7 @@ export const CreateDishForm = () => {
                         onChange={changeHandler}
                     />
                     <Input
+                        type="number"
                         placeholder="cost"
                         name="cost"
                         m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
@@ -129,19 +133,44 @@ export const DishList = ({ dishes }) => {
             overflow="visible scroll"
             h={{ xs: '21rem', md: '21rem', lg: '21rem' }}
         >
-            {dishes.map((dish) => {
+            {dishes.map((dish, key) => {
                 return (
                     <Row
+                        key={key}
                         m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
                         bg="info300"
                         hoverBg="info400"
                         rounded="sm"
                         h={{ xs: '4rem', md: '4rem', lg: '4rem' }}
                     >
-                        <Div>
-                            <Text>{dish.title}</Text>
-                            <Text>{dish.cost}</Text>
-                            <Text>{dish.description}</Text>
+                        <Div
+                            p={{
+                                x: { xs: '1rem', md: '1rem', lg: '1rem' },
+                                y: { xs: '0.5rem', md: '0.5rem', lg: '0.5rem' },
+                            }}
+                        >
+                            <Row>
+                                <Text
+                                    textSize="paragraph"
+                                    textColor="info900"
+                                    fontFamily="primary"
+                                    textWeight="600"
+                                >
+                                    {dish.title} ${dish.cost}
+                                </Text>
+                            </Row>
+                            <Row>
+                                <Text
+                                    textSize="paragraph"
+                                    textColor="gray900"
+                                    fontFamily="primary"
+                                >
+                                    {dish.description.length > 50
+                                        ? dish.description.substring(0, 50) +
+                                          '...'
+                                        : dish.description}
+                                </Text>
+                            </Row>
                         </Div>
                     </Row>
                 )
