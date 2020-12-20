@@ -31,10 +31,7 @@ export const MainPage = () => {
         <>
             {!loading && (
                 <Container>
-                    <ul>
-                        <li>{user.name}</li>
-                        <li>{user.email}</li>
-                    </ul>
+                    {user.name} {user.email}
                     <Row>
                         <Col size="3">
                             <Card image="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" />
