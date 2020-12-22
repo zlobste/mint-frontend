@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { useAuth } from '../hooks/auth.hook'
 import {
     Input,
     Button,
@@ -12,8 +13,10 @@ import {
 } from 'atomize'
 import { useTranslation } from 'react-i18next'
 
-export const Card = ({ dish, image }) => {
-    const { t, i18n } = useTranslation()
+export const Card = ({ dish, image, setModalVisibility }) => {
+    const { t } = useTranslation()
+    const { token } = useAuth()
+    const isAuthenticated = !!token
 
     return (
         <Div bg="white" shadow="4" rounded="xl">
@@ -40,20 +43,23 @@ export const Card = ({ dish, image }) => {
                     >
                         {dish.description}
                     </Text>
-                    <Button
-                        h="2.5rem"
-                        p={{ x: '1rem' }}
-                        textColor="success700"
-                        hoverTextColor="success900"
-                        bg="success300"
-                        hoverBg="success400"
-                        border="1px solid"
-                        borderColor="success700"
-                        hoverBorderColor="success900"
-                        m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
-                    >
-                        {t('order.order')}
-                    </Button>
+                    {isAuthenticated && (
+                        <Button
+                            h="2.5rem"
+                            p={{ x: '1rem' }}
+                            textColor="success700"
+                            hoverTextColor="success900"
+                            bg="success300"
+                            hoverBg="success400"
+                            border="1px solid"
+                            borderColor="success700"
+                            hoverBorderColor="success900"
+                            m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
+                            onClick={() => setModalVisibility(true)}
+                        >
+                            {t('order.order')}
+                        </Button>
+                    )}
                 </Div>
             </Div>
         </Div>

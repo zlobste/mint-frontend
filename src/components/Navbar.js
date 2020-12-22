@@ -70,7 +70,7 @@ export const Navbar = ({ isAuthenticated }) => {
                             x: { xs: '1rem', md: '1rem', lg: '1rem' },
                             y: { xs: '0.5rem', md: '0.5rem', lg: '0.5rem' },
                         }}
-                        onClick={() => history.push('/create')}
+                        onClick={() => history.push('/main')}
                     >
                         {t('nav.main')}
                     </Button>
@@ -93,7 +93,7 @@ export const Navbar = ({ isAuthenticated }) => {
                                 x: { xs: '1rem', md: '1rem', lg: '1rem' },
                                 y: { xs: '0.5rem', md: '0.5rem', lg: '0.5rem' },
                             }}
-                            onClick={logoutHandler}
+                            onClick={() => history.push('/orders')}
                         >
                             {t('nav.orders')}
                         </Button>

@@ -13,13 +13,16 @@ import {
     Text,
     Div,
     Modal,
+    SideDrawer,
 } from 'atomize'
+import { useTranslation } from 'react-i18next'
 
 export const MainPage = () => {
     const [user, setUser] = useState({})
     const [dishes, setDishes] = useState([])
     const { loading, request } = useHttp()
     const { token } = useContext(AuthContext)
+    const [modalVisibility, setModalVisibility] = useState(false)
 
     const fetchUserInfo = useCallback(async () => {
         try {
@@ -65,7 +68,15 @@ export const MainPage = () => {
                             return (
                                 <Col size="3" p="1rem">
                                     <Card
-                                        image="https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg"
+                                        image="https://images11.bazaar.ru/upload/custom/0c2/0c2f4c9cfed56b3b284070d5772e10a6.jpg"
+                                        dish={dish}
+                                        setModalVisibility={setModalVisibility}
+                                    />
+                                    <SizeSideDrawer
+                                        isOpen={modalVisibility}
+                                        onClose={() =>
+                                            setModalVisibility(false)
+                                        }
                                         dish={dish}
                                     />
                                 </Col>
@@ -78,26 +89,49 @@ export const MainPage = () => {
     )
 }
 
-const AlignCenterModal = ({ isOpen, onClose }) => {
+const SizeSideDrawer = ({ isOpen, onClose, dish }) => {
+    const { t } = useTranslation()
+    const { request } = useHttp()
+    const { token } = useContext(AuthContext)
+
+    const createOrder = async () => {
+        try {
+            const data = await request(
+                '/api/order/edit/create',
+                'POST',
+                {
+                    cost: Number(dish.cost),
+                    datetime: new Date(),
+                    dish_id: Number(dish.id),
+                },
+                {
+                    Authorization: `Bearer ${token}`,
+                }
+            )
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     return (
-        <Modal isOpen={isOpen} onClose={onClose} align="center" rounded="md">
-            <Icon
-                name="Cross"
-                pos="absolute"
-                top="1rem"
-                right="1rem"
-                size="16px"
-                onClick={onClose}
-                cursor="pointer"
-            />
+        <SideDrawer
+            isOpen={isOpen}
+            onClose={onClose}
+            w={{ xs: '100vw', sm: '32rem' }}
+        >
             <Div d="flex" m={{ b: '4rem' }}>
-                <Icon
-                    name="AlertSolid"
-                    color="warning700"
-                    m={{ t: '0.35rem', r: '0.5rem' }}
-                />
-                <Text p={{ l: '0.5rem', t: '0.25rem' }} textSize="subheader">
-                    Do you really want to submit the request.
+                <Text p={{ l: '0.5rem', t: '0.25rem' }}>
+                    {t('order.modal.title')}
+                </Text>
+            </Div>
+            <Div d="flex" m={{ b: '1rem' }}>
+                <Text p={{ l: '0.5rem', t: '0.25rem' }}>
+                    {dish.title} ${dish.cost}
+                </Text>
+            </Div>
+            <Div d="flex" m={{ b: '1rem' }}>
+                <Text p={{ l: '0.5rem', t: '0.25rem' }}>
+                    {dish.description}
                 </Text>
             </Div>
             <Div d="flex" justify="flex-end">
@@ -107,12 +141,12 @@ const AlignCenterModal = ({ isOpen, onClose }) => {
                     textColor="medium"
                     m={{ r: '1rem' }}
                 >
-                    Cancel
+                    {t('order.modal.cancel')}
                 </Button>
-                <Button onClick={onClose} bg="info700">
-                    Yes, Submit
+                <Button onClick={createOrder} bg="info700">
+                    {t('order.modal.order')}
                 </Button>
             </Div>
-        </Modal>
+        </SideDrawer>
     )
 }

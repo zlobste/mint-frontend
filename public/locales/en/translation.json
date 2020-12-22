@@ -21,6 +21,11 @@
         "search": "search"
     },
     "order": {
-        "order": "order"
+        "order": "order",
+        "modal": {
+            "title": "Order a dish",
+            "cancel": "cancel",
+            "order": "order"
+        }
     }
 }
