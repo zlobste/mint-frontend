@@ -54,13 +54,14 @@ export const AuthPage = () => {
     return (
         <div>
             <Row>
-                <Col size="4" />
-                <Col size="4">
+                <Col size="2" />
+                <Col size="6">
                     <Container
                         align="center"
                         justify="space-between"
                         flexDir="column"
-                        shadow="0 16px 24px -2px rgba(0, 0, 0, 0.08)"
+                        shadow="5"
+                        rounded="sm"
                         p={{ xs: '1rem', md: '1rem', lg: '1rem' }}
                         m={{ y: { xs: '4rem', md: '5rem', lg: '10rem' } }}
                     >
@@ -212,7 +213,7 @@ export const AuthPage = () => {
                         </Button>
                     </Container>
                 </Col>
-                <Col size="4" />
+                <Col size="2" />
             </Row>
         </div>
     )

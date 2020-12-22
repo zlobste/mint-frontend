@@ -11,5 +11,16 @@
         "userName": "name",
         "email": "email",
         "password": "password"
+    },
+    "nav": {
+        "main": "Main",
+        "orders": "Orders",
+        "logOut": "Log Out",
+        "logIn": "Log In",
+        "switchLanguage": "Switch language",
+        "search": "search"
+    },
+    "order": {
+        "order": "order"
     }
 }

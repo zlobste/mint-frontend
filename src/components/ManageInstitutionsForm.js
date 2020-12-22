@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useMessage } from '../hooks/message.hook'
 import { useHttp } from '../hooks/http.hook'
 import {
     Input,
@@ -14,55 +13,78 @@ import {
 } from 'atomize'
 import { AuthContext } from '../context/AuthContext'
 
-export const CreateDishForm = () => {
+export const ManageInstitutionsForm = () => {
     const { request } = useHttp()
     const { token } = useContext(AuthContext)
     const [form, setForm] = useState({
         title: '',
-        description: '',
-        cost: '',
+        address: '',
     })
-    const [dishes, setDishes] = useState([])
+    const [institutions, setInstitutions] = useState([])
 
     const changeHandler = (event) => {
         setForm({ ...form, [event.target.name]: event.target.value })
     }
 
-    const createDish = async () => {
+    const createInstitution = async () => {
         try {
             console.log(form)
             const data = await request(
-                '/api/dish/edit/create',
+                '/api/institution/edit/create',
                 'POST',
                 { ...form, cost: Number(form.cost) },
                 {
                     Authorization: `Bearer ${token}`,
                 }
             )
-            await getDishes()
+            await getInstitutions()
+
+            setForm({
+                title: '',
+                address: '',
+            })
         } catch (e) {
             console.error(e)
         }
     }
 
-    const getDishes = useCallback(async () => {
+    const deleteInstitution = async (id) => {
         try {
-            const data = await request('/api/dish/all', 'GET', null, {
+            const data = await request(
+                `/api/institution/edit/delete/${id}`,
+                'DELETE',
+                null,
+                {
+                    Authorization: `Bearer ${token}`,
+                }
+            )
+            await getInstitutions()
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    const getInstitutions = useCallback(async () => {
+        try {
+            const data = await request('/api/institution/all', 'GET', null, {
                 Authorization: `Bearer ${token}`,
             })
-            setDishes(data)
+            setInstitutions(data)
         } catch (e) {}
     }, [token, request])
 
     useEffect(() => {
-        getDishes()
-    }, [getDishes])
+        getInstitutions()
+    }, [getInstitutions])
 
     return (
-        <Container>
+        <Container m={{ xs: '5rem', md: '5rem', lg: '5rem' }}>
             <Row border="2px dashed" borderColor="info700" rounded="md">
                 <Col>
-                    <DishList dishes={dishes} />
+                    <InstitutionList
+                        institutions={institutions}
+                        deleteInstitution={deleteInstitution}
+                    />
                 </Col>
 
                 <Col size={6}>
@@ -73,20 +95,12 @@ export const CreateDishForm = () => {
                         value={form.title}
                         onChange={changeHandler}
                     />
-                    <Input
-                        type="number"
-                        placeholder="cost"
-                        name="cost"
-                        m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
-                        value={form.cost}
-                        onChange={changeHandler}
-                    />
                     <Textarea
-                        placeholder="description"
-                        name="description"
+                        placeholder="address"
+                        name="address"
                         fontFamily="primary"
                         m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
-                        value={form.description}
+                        value={form.address}
                         onChange={changeHandler}
                     />
                     <Button
@@ -101,7 +115,7 @@ export const CreateDishForm = () => {
                         borderColor="info700"
                         hoverBorderColor="info900"
                         m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
-                        onClick={createDish}
+                        onClick={createInstitution}
                     >
                         Create
                     </Button>
@@ -111,8 +125,8 @@ export const CreateDishForm = () => {
     )
 }
 
-export const DishList = ({ dishes }) => {
-    if (dishes.length === 0) {
+export const InstitutionList = ({ institutions, deleteInstitution }) => {
+    if (institutions.length === 0) {
         return (
             <Text
                 textAlign="center"
@@ -121,7 +135,7 @@ export const DishList = ({ dishes }) => {
                 fontFamily="primary"
                 p={{ xs: '7rem', md: '7rem', lg: '7rem' }}
             >
-                You have not created any dishes yet.
+                You have not created any institutions yet.
             </Text>
         )
     }
@@ -132,7 +146,7 @@ export const DishList = ({ dishes }) => {
             overflow="visible scroll"
             h={{ xs: '21rem', md: '21rem', lg: '21rem' }}
         >
-            {dishes.map((dish, key) => {
+            {institutions.map((institution, key) => {
                 return (
                     <Row
                         key={key}
@@ -142,10 +156,12 @@ export const DishList = ({ dishes }) => {
                         rounded="sm"
                         h={{ xs: '4rem', md: '4rem', lg: '4rem' }}
                     >
-                        <Div
+                        <Col
+                            size="10"
                             p={{
-                                x: { xs: '1rem', md: '1rem', lg: '1rem' },
                                 y: { xs: '0.5rem', md: '0.5rem', lg: '0.5rem' },
+                                x: { xs: '1rem', md: '1rem', lg: '1rem' },
+                                l: { xs: '1.5rem', md: '1.5rem', lg: '1.5rem' },
                             }}
                         >
                             <Row>
@@ -155,7 +171,7 @@ export const DishList = ({ dishes }) => {
                                     fontFamily="primary"
                                     textWeight="600"
                                 >
-                                    {dish.title} ${dish.cost}
+                                    {institution.title}
                                 </Text>
                             </Row>
                             <Row>
@@ -164,13 +180,39 @@ export const DishList = ({ dishes }) => {
                                     textColor="gray900"
                                     fontFamily="primary"
                                 >
-                                    {dish.description.length > 50
-                                        ? dish.description.substring(0, 50) +
+                                    {institution.address.length > 40
+                                        ? institution.address.substring(0, 40) +
                                           '...'
-                                        : dish.description}
+                                        : institution.address}
                                 </Text>
                             </Row>
-                        </Div>
+                        </Col>
+                        <Col
+                            size="2"
+                            p={{
+                                y: { xs: '0.7rem', md: '0.7rem', lg: '0.7rem' },
+                                x: { xs: '1rem', md: '1rem', lg: '1rem' },
+                                l: { xs: '2rem', md: '2rem', lg: '2rem' },
+                            }}
+                        >
+                            <Button
+                                h="2.5rem"
+                                w="2.5rem"
+                                bg="danger300"
+                                hoverBg="danger400"
+                                rounded="lg"
+                                m={{ r: '1rem' }}
+                                onClick={async () =>
+                                    await deleteInstitution(institution.id)
+                                }
+                            >
+                                <Icon
+                                    name="DeleteSolid"
+                                    size="20px"
+                                    color="danger700"
+                                />
+                            </Button>
+                        </Col>
                     </Row>
                 )
             })}
