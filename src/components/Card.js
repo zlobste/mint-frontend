@@ -13,7 +13,7 @@ import {
 } from 'atomize'
 import { useTranslation } from 'react-i18next'
 
-export const Card = ({ dish, image, setModalVisibility }) => {
+export const Card = ({ dish, image, setModalVisibility, setDish }) => {
     const { t } = useTranslation()
     const { token } = useAuth()
     const isAuthenticated = !!token
@@ -55,7 +55,10 @@ export const Card = ({ dish, image, setModalVisibility }) => {
                             borderColor="success700"
                             hoverBorderColor="success900"
                             m={{ xs: '1rem', md: '1rem', lg: '1rem' }}
-                            onClick={() => setModalVisibility(true)}
+                            onClick={() => {
+                                setDish(dish)
+                                setModalVisibility(true)
+                            }}
                         >
                             {t('order.order')}
                         </Button>

@@ -23,6 +23,7 @@ export const MainPage = () => {
     const { loading, request } = useHttp()
     const { token } = useContext(AuthContext)
     const [modalVisibility, setModalVisibility] = useState(false)
+    const [dish, setDish] = useState({})
 
     const fetchUserInfo = useCallback(async () => {
         try {
@@ -71,18 +72,17 @@ export const MainPage = () => {
                                         image="https://images11.bazaar.ru/upload/custom/0c2/0c2f4c9cfed56b3b284070d5772e10a6.jpg"
                                         dish={dish}
                                         setModalVisibility={setModalVisibility}
-                                    />
-                                    <SizeSideDrawer
-                                        isOpen={modalVisibility}
-                                        onClose={() =>
-                                            setModalVisibility(false)
-                                        }
-                                        dish={dish}
+                                        setDish={setDish}
                                     />
                                 </Col>
                             )
                         })}
                     </Row>
+                    <SizeSideDrawer
+                        isOpen={modalVisibility}
+                        onClose={() => setModalVisibility(false)}
+                        dish={dish}
+                    />
                 </Container>
             )}
         </Div>
@@ -108,6 +108,7 @@ const SizeSideDrawer = ({ isOpen, onClose, dish }) => {
                     Authorization: `Bearer ${token}`,
                 }
             )
+            onClose()
         } catch (e) {
             console.error(e)
         }
