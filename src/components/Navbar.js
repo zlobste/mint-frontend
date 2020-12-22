@@ -14,7 +14,7 @@ import {
 } from 'atomize'
 import { useTranslation } from 'react-i18next'
 
-export const Navbar = ({ isAuthenticated }) => {
+export const Navbar = ({ isAuthenticated, userId }) => {
     const history = useHistory()
     const auth = useContext(AuthContext)
     const { t, i18n } = useTranslation()
@@ -99,6 +99,31 @@ export const Navbar = ({ isAuthenticated }) => {
                         </Button>
                     </Row>
                 )}
+
+                {isAuthenticated && (
+                    <Row>
+                        <Button
+                            h="2.5rem"
+                            p={{ x: '1rem' }}
+                            textColor="info700"
+                            hoverTextColor="info900"
+                            bg="info300"
+                            hoverBg="info400"
+                            border="1px solid"
+                            borderColor="info800"
+                            hoverBorderColor="info900"
+                            minW="15rem"
+                            m={{
+                                x: { xs: '1rem', md: '1rem', lg: '1rem' },
+                                y: { xs: '0.5rem', md: '0.5rem', lg: '0.5rem' },
+                            }}
+                            onClick={() => history.push('/admin')}
+                        >
+                            {t('nav.admin')}
+                        </Button>
+                    </Row>
+                )}
+
                 <Row>
                     <Button
                         h="2.5rem"

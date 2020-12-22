@@ -39,7 +39,10 @@ function Main() {
             <Router>
                 <Row>
                     <Col size="2" d="flex" justify="flex-end">
-                        <Navbar isAuthenticated={isAuthenticated} />
+                        <Navbar
+                            isAuthenticated={isAuthenticated}
+                            userId={userId}
+                        />
                     </Col>
                     <Col size="10">
                         <Container>{routes}</Container>

@@ -18,7 +18,8 @@
         "logOut": "Log Out",
         "logIn": "Log In",
         "switchLanguage": "Switch language",
-        "search": "search"
+        "search": "search",
+        "admin": "Administrator"
     },
     "order": {
         "order": "order",
@@ -26,6 +27,11 @@
             "title": "Order a dish",
             "cancel": "cancel",
             "order": "order"
+        },
+        "status": {
+            "pending": "PENDING",
+            "rejected": "REJECTED",
+            "ready": "READY"
         }
     }
 }
