@@ -1,10 +1,8 @@
-import React, { useContext, useState } from 'react'
-import { NavLink, useHistory } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 import {
-    Div,
     Button,
-    SideDrawer,
     Icon,
     Text,
     Col,

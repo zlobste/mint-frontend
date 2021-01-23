@@ -1,10 +1,10 @@
 import React from 'react'
-import { ManageOrdersForm } from '../components/ManageOrdersForm'
+import { OrderManageForm } from '../components/forms/OrderManageForm'
 
 export const OrdersPage = () => {
     return (
         <>
-            <ManageOrdersForm />
+            <OrderManageForm />
         </>
     )
 }

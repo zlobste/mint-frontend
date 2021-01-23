@@ -6,16 +6,15 @@ import { AuthContext } from './context/AuthContext'
 import { Navbar } from './components/Navbar'
 import { Loader } from './components/Loader'
 import 'materialize-css'
-import {
-    Button,
-    Text,
-    Col,
-    Row,
-    SideDrawer,
-    Div,
-    Icon,
-    Container,
-} from 'atomize'
+import { Col, Row, Container } from 'atomize'
+
+export default function App() {
+    return (
+        <Suspense fallback='loading'>
+            <Main />
+        </Suspense>
+    )
+}
 
 function Main() {
     const { token, login, logout, userId, ready } = useAuth()
@@ -38,25 +37,17 @@ function Main() {
         >
             <Router>
                 <Row>
-                    <Col size="2" d="flex" justify="flex-end">
+                    <Col size='2' d='flex' justify='flex-end'>
                         <Navbar
                             isAuthenticated={isAuthenticated}
                             userId={userId}
                         />
                     </Col>
-                    <Col size="10">
+                    <Col size='10'>
                         <Container>{routes}</Container>
                     </Col>
                 </Row>
             </Router>
         </AuthContext.Provider>
-    )
-}
-
-export default function App() {
-    return (
-        <Suspense fallback="loading">
-            <Main />
-        </Suspense>
     )
 }

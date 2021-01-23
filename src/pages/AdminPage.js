@@ -1,14 +1,14 @@
 import React from 'react'
-import { ManageDishesForm } from '../components/ManageDishesForm'
-import { ManageUsersForm } from '../components/ManageUsersForm'
-import { ManageInstitutionsForm } from '../components/ManageInstitutionsForm'
+import { DishManageForm } from '../components/forms/DishManageForm'
+import { UserManageForm } from '../components/forms/UserManageForm'
+import { InstitutionManageForm } from '../components/forms/InstitutionManageForm'
 
 export const AdminPage = () => {
     return (
         <>
-            <ManageDishesForm />
-            <ManageUsersForm />
-            <ManageInstitutionsForm />
+            <DishManageForm />
+            <UserManageForm />
+            <InstitutionManageForm />
         </>
     )
 }
